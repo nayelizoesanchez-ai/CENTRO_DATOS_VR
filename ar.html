@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Centro de Datos AR</title>
+<script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+</head>
+<body style="margin:0">
+
+<!-- Botones de navegacion y alternancia -->
+<div style="position:fixed; z-index:9999; top:10px; left:10px; display:flex; gap:8px; flex-wrap:wrap;">
+    <a href="index.html" style="background:white; padding:8px; border-radius:6px; text-decoration:none; color:#000;">Volver a VR</a>
+    <button id="btn-servidores" style="padding:8px; border-radius:6px;">Servidores</button>
+    <button id="btn-router" style="padding:8px; border-radius:6px;">Router</button>
+</div>
+
+<a-scene mindar-image="imageTargetSrc: targets.mind;"
+    renderer="colorManagement: true" vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false">
+
+    <a-assets>
+        <a-asset-item id="modelo-servidores" src="models/servers.glb"></a-asset-item>
+        <a-asset-item id="modelo-router" src="models/wifi_router.glb"></a-asset-item>
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity mindar-image-target="targetIndex: 0">
+
+        <!-- Servidores (visible al inicio) -->
+        <a-entity id="ar-servidores">
+            <a-gltf-model src="#modelo-servidores" position="0 -0.28 0.1"
+                scale="0.65 0.65 0.65" rotation="0 0 0"></a-gltf-model>
+            <a-text value="SERVIDORES - ACTIVO" position="0 0.48 0.15"
+                color="#00ff88" align="center" width="1.7"></a-text>
+        </a-entity>
+
+        <!-- Router (oculto al inicio) -->
+        <a-entity id="ar-router" visible="false">
+            <a-gltf-model src="#modelo-router" position="0 -0.15 0.1"
+                rotation="0 180 0" scale="2 2 2"></a-gltf-model>
+            <a-text value="ROUTER WIFI - ACTIVO" position="0 0.48 0.15"
+                color="#00e5ff" align="center" width="1.7"></a-text>
+        </a-entity>
+
+    </a-entity>
+</a-scene>
+
+<script>
+    const servidores = document.getElementById('ar-servidores');
+    const router = document.getElementById('ar-router');
+
+    document.getElementById('btn-servidores').addEventListener('click', function () {
+        servidores.setAttribute('visible', true);
+        router.setAttribute('visible', false);
+    });
+
+    document.getElementById('btn-router').addEventListener('click', function () {
+        servidores.setAttribute('visible', false);
+        router.setAttribute('visible', true);
+    });
+</script>
+
+</body>
+</html>
